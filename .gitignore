@@ -24,6 +24,10 @@ dist-ssr
 *.sw?
 
 # C# built files
+.vs
 bin
 obj
 packages
+
+# VSCode custom files
+*.code-workspace
