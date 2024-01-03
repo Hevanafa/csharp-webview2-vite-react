@@ -22,11 +22,20 @@
 
 ## How to Start
 
-1. Load the project with Visual Studio 2022 & let the IDE finish the package installation,
-2. Select x64 as the processor architecture,
-3. Build Solution,
-4. Open `react-src`,
-5. Install the dependencies with either `yarn install` or `pnpm i`,
-6. Run the build & copy script `.\build_copy.ps1`,
-7. Run the project from Visual Studio.
+1. Load the project with Visual Studio & let the IDE finish the installation of the dependencies,
+2. Select **x64** as the processor architecture,
+3. Open `react-src`,
+4. Install the dependencies with either `yarn install` or `pnpm i`,
+5. Start the local server with `pnpm dev` or `pnpm start`,
+6. Run the project from Visual Studio.
+
+Due to how `hostObjects` is used, the React project can only be run from the debugger, not on an external browser.
+
+
+## How to Make the Distributable Version
+
+1. In Visual Studio, change the target build from **Debug** to **Release**,
+2. Build Solution (<key>Ctrl+Shift+B</key>),
+3. Open `react-src`,
+4. Execute the script `.\build_copy.ps1`, this script builds the React project & copies the `dist` folder to the Debug folder.  You can change this in the script.
 

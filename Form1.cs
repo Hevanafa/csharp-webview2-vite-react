@@ -20,15 +20,31 @@ namespace CSharpReact
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            InitAsync();
+            InitDebugAsync();
+            //InitAsync();
         }
 
+        /// <summary>
+        /// Use this for debugging.
+        /// </summary>
+        async void InitDebugAsync()
+        {
+            await MainWebView.EnsureCoreWebView2Async();
+
+            MainWebView.NavigationStarting += MainWebView_NavigationStarting;
+
+            // you can change this depending on how you setup the Vite project
+            MainWebView.CoreWebView2.Navigate("http://localhost:5173/");
+        }
+
+        /// <summary>
+        /// This requires the distributable version of the React project (built first).
+        /// </summary>
         async void InitAsync() {
             await MainWebView.EnsureCoreWebView2Async();
 
             MainWebView.NavigationStarting += MainWebView_NavigationStarting;
 
-            // This requires the React project to be built first.
             MainWebView.CoreWebView2.SetVirtualHostNameToFolderMapping(
                 "react_webview", "dist", CoreWebView2HostResourceAccessKind.Deny);
 
@@ -39,13 +55,10 @@ namespace CSharpReact
         {
             var nativeClass = new NativeClass();
 
-            // This will be accessible in JS as:
-            //   const frame = (window as any).chrome.webview.hostObjects.frame;
+            // This will be accessible in React as:
+            //   const { nativeClass } = window.chrome.webview.hostObjects as CustomHostObjects;
             // Which is derived from:
             //   window.chrome.webview.hostObjects.{name}
-
-            // to call the Add method, use:
-            //   await frame.Add(a, b);
 
             MainWebView.CoreWebView2.AddHostObjectToScript("nativeClass", nativeClass);
         }

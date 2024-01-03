@@ -1,0 +1,37 @@
+# WIP script, doesn't work yet
+
+# https://stackoverflow.com/questions/5174893/
+$log_file = build_log.txt;
+
+$msbuild_path = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe";
+
+Write-Host "Attempting to call MSBuild for .NET 4.0...";
+
+try {
+    Start-Process $msbuild_path
+} catch {
+    Write-Host "Couldn't find MSBuild.  You can find it with"
+    Write-Host "Get-ChildItem HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\"
+    Write-Host "Then edit the variable in this script."
+
+    exit
+}
+
+$target_release = "Debug";  # "Debug" or "Release"
+
+$build_args = @(
+    ".\CSharpReact.sln",
+    "/t:rebuild",
+    "/verbosity:quiet",
+    "/property:Configuration=$target_release",
+    '/logger:FileLogger,Microsoft.Build.Engine;logfile=' + $log_file
+);
+
+Start-Process $msbuild_path -ArgumentList ($build_args -join " ");
+exit;
+
+Write-Host "Starting the React project build script..."
+
+Set-Location .\react-src
+.\build_copy.ps1
+Set-Location ..
